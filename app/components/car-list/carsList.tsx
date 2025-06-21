@@ -3,12 +3,22 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { cars as allCars } from 'app/data/cars';
+import { FaCarSide, FaTruckPickup, FaShuttleVan, FaCaravan, FaCar } from 'react-icons/fa';
 
 interface CarsListProps {
   limit?: number;
   hideFilter?: boolean;
   title?: string;
 }
+
+const typeIcons: Record<string, React.ReactNode> = {
+  Semua: <FaCar className="inline-block mr-2" />,
+  Sedan: <FaCarSide className="inline-block mr-2" />,
+  Minivan: <FaShuttleVan className="inline-block mr-2" />,
+  SUV: <FaCaravan className="inline-block mr-2" />,
+  Pickup: <FaTruckPickup className="inline-block mr-2" />,
+  Cabriolet: <FaCarSide className="inline-block mr-2" />,
+};
 
 const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pilih Unit" }) => {
   const [activeFilter, setActiveFilter] = useState('Semua');
@@ -24,21 +34,21 @@ const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pil
     <section className="py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">{title}</h2>
 
           {!hideFilter && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center mb-4">
               {['Semua', 'Sedan', 'Minivan', 'SUV', 'Pickup', 'Cabriolet'].map((type) => (
                 <button
                   key={type}
                   onClick={() => setActiveFilter(type)}
-                  className={`px-4 py-2 rounded-full border text-sm ${
+                  className={`flex items-center px-4 py-2 rounded-full border text-sm transition-all duration-200 ${
                     activeFilter === type
                       ? 'bg-blue-600 text-white'
                       : 'bg-white text-gray-600 border-gray-300'
                   }`}
                 >
-                  {type}
+                  {typeIcons[type]}{type}
                 </button>
               ))}
             </div>
