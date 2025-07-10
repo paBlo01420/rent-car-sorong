@@ -2,13 +2,14 @@
 
 import React from 'react';
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
+import Hero from "@/components/Hero-display";
 import Achievement from "@/components/Achievement";
 import Superior from "@/components/Superior";
 import Car from "@/components/Car";
 import Fact from "@/components/FactSearch";
 import Footer from "@/components/Footer";
 import ScrollAnimation from "@/components/ScrollAnimation";
+import FloatingContact from "./components/FloatingContact";
 
 export default function Home() {
   return (
@@ -39,6 +40,8 @@ export default function Home() {
       <ScrollAnimation direction="up" delay={0}>
         <Footer />
       </ScrollAnimation>
+      {/* Floating Contact Modern */}
+      <FloatingContact />
     </div>
   );
 }

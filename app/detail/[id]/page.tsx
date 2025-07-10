@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { cars as carsData } from 'app/data/cars';
 
 const DetailCar = () => {
   const params = useParams();
@@ -14,92 +15,6 @@ const DetailCar = () => {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [car, setCar] = useState(null);
 
-  // Data mobil lengkap
-  const carsData = [
-    {
-      id: 1,
-      name: "Avanza",
-      type: "Minivan",
-      price: "Rp.350.000",
-      period: "per day",
-      mainImage: "/images/car-list/avanza-gray.png",
-      images: [
-        "/images/car-list/avanza-gray.png",
-        "/images/detail-avanza-gray/detail-avanza-gray.png",
-        "/images/detail-avanza-gray/detail-avanza-gray-2.png",
-        "/images/detail-avanza-gray/detail-avanza-gray-3.png"
-      ],
-      specifications: {
-        transmisi: "Matic",
-        bahanBakar: "Gasoline",
-        pintu: "5",
-        airConditioner: "Yes",
-        seats: "7",
-        konsumsBBM: "13 Km/Liter"
-      },
-      features: {
-        primary: ["ABS", "Air Bags", "Cruise Control"],
-        secondary: ["Air Bags", "Air Conditioner"]
-      },
-      description: "Toyota Avanza adalah kendaraan keluarga yang sempurna dengan kapasitas 7 penumpang. Dilengkapi dengan fitur keselamatan terdepan dan kenyamanan berkendara yang optimal untuk perjalanan jauh maupun dalam kota."
-    },
-    {
-      id: 2,
-      name: "Vios",
-      type: "Sedan",
-      price: "Rp.400.000",
-      period: "per day",
-      mainImage: "/images/car-list/vios-silver.png",
-      images: [
-        "/images/car-list/vios-silver.png",
-        "/images/vios-interior1.jpg",
-        "/images/vios-interior2.jpg",
-        "/images/vios-dashboard.jpg"
-      ],
-      specifications: {
-        transmisi: "Matic",
-        bahanBakar: "Gasoline",
-        pintu: "4",
-        airConditioner: "Yes",
-        seats: "5",
-        konsumsBBM: "15 Km/Liter"
-      },
-      features: {
-        primary: ["ABS", "Air Bags", "Cruise Control"],
-        secondary: ["Air Bags", "Air Conditioner"]
-      },
-      description: "Toyota Vios menawarkan kenyamanan berkendara dengan desain sedan yang elegan. Cocok untuk perjalanan bisnis maupun keluarga dengan efisiensi bahan bakar yang baik."
-    },
-    {
-      id: 3,
-      name: "Civic",
-      type: "Sedan",
-      price: "Rp.550.000",
-      period: "per day",
-      mainImage: "/images/car-list/civic-white.png",
-      images: [
-        "/images/car-list/civic-white.png",
-        "/images/civic-interior1.jpg",
-        "/images/civic-interior2.jpg",
-        "/images/civic-dashboard.jpg"
-      ],
-      specifications: {
-        transmisi: "Matic",
-        bahanBakar: "Gasoline",
-        pintu: "4",
-        airConditioner: "Yes",
-        seats: "5",
-        konsumsBBM: "14 Km/Liter"
-      },
-      features: {
-        primary: ["ABS", "Air Bags", "Cruise Control"],
-        secondary: ["Air Bags", "Air Conditioner"]
-      },
-      description: "Honda Civic menghadirkan performa dan gaya yang memukau. Dengan teknologi terdepan dan desain sporty, cocok untuk Anda yang menginginkan pengalaman berkendara yang dinamis."
-    }
-  ];
-
-  // Ambil data mobil berdasarkan ID
   useEffect(() => {
     if (id) {
       const foundCar = carsData.find(car => car.id === parseInt(id as string));
@@ -107,8 +22,8 @@ const DetailCar = () => {
     }
   }, [id]);
 
-  // Data mobil serupa (4 mobil)
-  const similarCars = carsData.filter(item => item.id !== car?.id).slice(0, 4);
+  // Data mobil lain (6 unit, exclude current)
+  const otherCars = carsData.filter(item => item.id !== car?.id).slice(0, 6);
 
   if (!car) {
     return (
@@ -126,245 +41,202 @@ const DetailCar = () => {
       {/* Navbar */}
       <Navbar />
 
+      {/* Spacer dari navbar ke section utama */}
+      <div className="h-8 md:h-22" />
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Left Column - Images */}
-<div className="space-y-4">
-  {/* Main Image with smooth transition */}
-  <div className="relative h-96 bg-gray-100 rounded-2xl overflow-hidden">
-    <Image
-      key={car.images[selectedImage]} // key agar fade saat gambar berganti
-      src={car.images[selectedImage]}
-      alt={car.name}
-      fill
-      className="object-cover transition-opacity duration-500 ease-in-out opacity-100"
-    />
-  </div>
-
-  {/* 3 Thumbnail Images – Row Layout */}
-  <div className="flex gap-4">
-    {car.images.slice(1, 4).map((image, index) => {
-      const actualIndex = index + 1;
-      return (
-        <div
-          key={index}
-          className={`relative w-24 h-24 sm:w-28 sm:h-28 bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
-            selectedImage === actualIndex ? 'ring-2 ring-blue-600 ring-offset-2' : 'hover:opacity-80'
-          }`}
-          onClick={() => setSelectedImage(actualIndex)}
-        >
-          <Image
-            src={image}
-            alt={`${car.name} ${actualIndex}`}
-            fill
-            className="object-cover"
-          />
-        </div>
-      );
-    })}
-  </div>
-</div>
-
-
-          {/* Right Column - Details */}
-          <div className="space-y-8">
-            {/* Car Info */}
-            <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">{car.name}</h1>
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-3xl font-bold text-blue-600">{car.price}</span>
-                <span className="text-gray-500">/ {car.period}</span>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Left: Gambar & Spesifikasi */}
+            <div className="lg:col-span-2 flex flex-col gap-8">
+            {/* Gambar utama / galeri */}
+            <>
+              <div className="relative h-80 md:h-96 bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center">
+                <Image
+                  key={car.images[selectedImage]}
+                  src={car.images[selectedImage]}
+                  alt={car.name}
+                  fill
+                  className="object-contain transition-opacity duration-500 ease-in-out opacity-100"
+                />
               </div>
-              <p className="text-gray-600 leading-relaxed">{car.description}</p>
-            </div>
-
-            {/* Specifications */}
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Spesifikasi Unit</h3>
+              <div className="flex gap-4 justify-center">
+                {car.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`relative w-20 h-20 bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${selectedImage === index ? 'ring-2 ring-blue-600 ring-offset-2' : 'hover:opacity-80'}`}
+                    onClick={() => setSelectedImage(index)}
+                  >
+                    <Image src={image} alt={`${car.name} ${index}`} fill className="object-cover" />
+                  </div>
+                ))}
+              </div>
+            </>
+            {/* Spesifikasi & Kelengkapan */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Spesifikasi */}
+              <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Spesifikasi Unit</h3>
               <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Transmisi</p>
-                    <p className="font-medium text-gray-900">{car.specifications.transmisi}</p>
-                  </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-800">
+                <span className="font-medium text-gray-700">Transmisi:</span>
+                <span className="text-gray-900">{car.specifications.transmisi}</span>
                 </div>
-
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Bahan Bakar</p>
-                    <p className="font-medium text-gray-900">{car.specifications.bahanBakar}</p>
-                  </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-800">
+                <span className="font-medium text-gray-700">Bahan Bakar:</span>
+                <span className="text-gray-900">{car.specifications.bahanBakar}</span>
                 </div>
-
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Pintu</p>
-                    <p className="font-medium text-gray-900">{car.specifications.pintu}</p>
-                  </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-800">
+                <span className="font-medium text-gray-700">Pintu:</span>
+                <span className="text-gray-900">{car.specifications.pintu}</span>
                 </div>
-
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Seats</p>
-                    <p className="font-medium text-gray-900">{car.specifications.seats}</p>
-                  </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-800">
+                <span className="font-medium text-gray-700">Seats:</span>
+                <span className="text-gray-900">{car.specifications.seats}</span>
                 </div>
-
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Air Conditioner</p>
-                    <p className="font-medium text-gray-900">{car.specifications.airConditioner}</p>
-                  </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-800">
+                <span className="font-medium text-gray-700">Air Conditioner:</span>
+                <span className="text-gray-900">{car.specifications.airConditioner}</span>
                 </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-800">
+                <span className="font-medium text-gray-700">Konsumsi BBM:</span>
+                <span className="text-gray-900">{car.specifications.konsumsBBM}</span>
+                </div>
+              </div>
+              </div>
+              {/* Kelengkapan */}
+              <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Kelengkapan Unit</h3>
+              <div className="flex flex-wrap gap-3">
+                {car.features.primary.concat(car.features.secondary).map((feature, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 text-sm bg-gray-50 px-3 py-1 rounded-full"
+                >
+                  <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                  <span
+                  className={
+                    feature.toLowerCase() === 'abs'
+                    ? 'font-bold text-blue-700'
+                    : feature.toLowerCase() === 'air bags'
+                    ? 'font-semibold text-green-700'
+                    : feature.toLowerCase() === 'cruise control'
+                    ? 'font-semibold text-purple-700'
+                    : feature.toLowerCase() === 'air conditioner'
+                    ? 'font-semibold text-cyan-700'
+                    : 'text-gray-800'
+                  }
+                  >
+                  {feature}
+                  </span>
+                </div>
+                ))}
+              </div>
+              </div>
+            </div>
+            </div>
 
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Konsumsi BBM</p>
-                    <p className="font-medium text-gray-900">{car.specifications.konsumsBBM}</p>
-                  </div>
+          {/* Right: Jenis Layanan & Tombol Pesan */}
+          <div className="flex flex-col gap-8">
+            {/* Card Jenis Layanan */}
+            <div className="bg-[#6C5CE7] rounded-2xl p-6 text-white shadow-lg">
+              <h3 className="text-lg font-bold text-center mb-4">Jenis Layanan</h3>
+              <div className="space-y-6">
+                <div>
+                  <div className="font-semibold">Lepas Kunci :</div>
+                  <ul className="ml-4 list-disc text-sm">
+                    <li>Rp.300.000 / 12 Jam</li>
+                    <li>Rp.600.000 / Full Day</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="font-semibold">Mobil + Supir</div>
+                  <ul className="ml-4 list-disc text-sm">
+                    <li>Rp.400.000 / 6 Jam</li>
+                    <li>Rp.500.000 / 12 Jam</li>
+                    <li>Rp.800.000 / Full Day</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="font-semibold">Mobil + Supir + Bensin</div>
+                  <ul className="ml-4 list-disc text-sm">
+                    <li>Rp.450.000 / 6 Jam</li>
+                    <li>Rp.550.000 / 12 Jam</li>
+                    <li>Rp.900.000 / Full Day</li>
+                  </ul>
                 </div>
               </div>
             </div>
-
-            {/* Features */}
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Kelengkapan Unit</h3>
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  {car.features.primary.map((feature, index) => (
-                    <div key={index} className="flex items-center space-x-2 mb-2">
-                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                      <span className="text-gray-700">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  {car.features.secondary.map((feature, index) => (
-                    <div key={index} className="flex items-center space-x-2 mb-2">
-                      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                      <span className="text-gray-700">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            {/* Tombol Pesan Sekarang (WA) */}
+            <a
+              href={`https://wa.me/6281234567890?text=Halo%20Admin%2C%20saya%20ingin%20sewa%20${encodeURIComponent(car.name)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full bg-green-500 hover:bg-green-600 text-white font-bold text-lg py-4 rounded-xl text-center shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 0 5.37 0 12c0 2.11.55 4.09 1.51 5.8L0 24l6.36-1.67A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12 0-3.19-1.25-6.18-3.48-8.52zM12 22c-1.85 0-3.62-.5-5.15-1.37l-.37-.21-3.77.99 1.01-3.67-.24-.38A9.96 9.96 0 012 12c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10zm5.2-7.2c-.28-.14-1.65-.81-1.9-.9-.25-.09-.43-.14-.61.14-.18.28-.7.9-.86 1.08-.16.18-.32.2-.6.07-.28-.14-1.18-.44-2.25-1.4-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.34.42-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.61-1.47-.84-2.01-.22-.54-.45-.47-.61-.48-.16-.01-.35-.01-.54-.01-.19 0-.5.07-.76.34-.26.27-1 1-1 2.43 0 1.43 1.03 2.81 1.18 3.01.15.2 2.03 3.1 4.93 4.23.69.29 1.23.46 1.65.59.69.22 1.32.19 1.81.12.55-.08 1.65-.67 1.88-1.32.23-.65.23-1.2.16-1.32-.07-.12-.25-.19-.53-.33z" />
+              </svg>
+              Pesan Sekarang
+            </a>
+            {/* Info harga utama */}
+            <div className="bg-white rounded-xl p-4 shadow text-center">
+              <h1 className="text-2xl font-bold text-gray-900 mb-1">{car.name}</h1>
+              <span className="text-xl font-bold text-blue-600">{car.price}</span>
+              <span className="text-gray-500"> / {car.period}</span>
             </div>
-
-            {/* Book Button */}
-            <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-              Pilih Unit
-            </button>
+            {/* Deskripsi */}
+            <div className="text-gray-600 text-sm leading-relaxed bg-gray-50 rounded-xl p-4">{car.description}</div>
           </div>
         </div>
       </div>
 
-      {/* Similar Cars Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Mobil Serupa</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {similarCars.map((similarCar) => (
-              <Link key={similarCar.id} href={`/details/${similarCar.id}`}>
-                <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 cursor-pointer">
-                  <div className="relative h-40 mb-4 bg-gray-100 rounded-lg overflow-hidden">
-                    <Image
-                      src={similarCar.mainImage}
-                      alt={similarCar.name}
-                      fill
-                      className="object-cover"
-                    />
+      {/* Section Unit Lain */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Unit Lain</h2>
+          <Link href="/vehicles" className="text-blue-600 font-semibold hover:underline text-base md:text-lg">View All</Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {otherCars.map((item) => (
+            <div
+              key={item.id}
+              className="bg-gray-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+            >
+              <div className="relative h-40 mb-4 bg-white rounded-lg overflow-hidden">
+                <Image src={item.mainImage} alt={item.name} fill className="object-contain p-2" />
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-800">{item.name}</h3>
+                    <p className="text-sm text-gray-500">{item.type}</p>
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-800">{similarCar.name}</h3>
-                        <p className="text-sm text-gray-500">{similarCar.type}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-lg font-bold text-blue-600">{similarCar.price}</p>
-                        <p className="text-xs text-gray-500">{similarCar.period}</p>
-                      </div>
-                    </div>
-                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors duration-200">
-                      View Details
-                    </button>
+                  <div className="text-right">
+                    <p className="text-lg font-bold text-blue-600">{item.price}</p>
+                    <p className="text-xs text-gray-500">{item.period}</p>
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+                <div className="flex items-center justify-between text-xs text-gray-600">
+                  <span>{item.specifications.transmisi}</span>
+                  <span>{item.specifications.bahanBakar}</span>
+                  <span>{item.specifications.seats} Seats</span>
+                </div>
+                <Link href={`/detail/${item.id}`} legacyBehavior>
+                  <a className="w-full block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg text-center transition-colors duration-200">
+                    View Details
+                  </a>
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Footer */}
       <Footer />
-
-      {/* Image Modal */}
-      {isImageModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-          <div className="relative max-w-4xl max-h-full">
-            <button
-              onClick={() => setIsImageModalOpen(false)}
-              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
-            >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <div className="relative h-96 md:h-[600px] w-full bg-gray-900 rounded-lg overflow-hidden">
-              <Image
-                src={car.images[selectedImage]}
-                alt={car.name}
-                fill
-                className="object-contain"
-              />
-            </div>
-            <div className="flex justify-center space-x-2 mt-4">
-              {car.images.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    selectedImage === index ? 'bg-white' : 'bg-gray-500 hover:bg-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
-};
+}
 
 export default DetailCar;

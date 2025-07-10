@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { cars as allCars } from 'app/data/cars';
 import { FaCarSide, FaTruckPickup, FaShuttleVan, FaCaravan, FaCar } from 'react-icons/fa';
+import Link from 'next/link';
 
 interface CarsListProps {
   limit?: number;
   hideFilter?: boolean;
   title?: string;
+  cars?: typeof allCars;
 }
 
 const typeIcons: Record<string, React.ReactNode> = {
@@ -20,13 +22,14 @@ const typeIcons: Record<string, React.ReactNode> = {
   Cabriolet: <FaCarSide className="inline-block mr-2" />,
 };
 
-const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pilih Unit" }) => {
+const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pilih Unit", cars }) => {
   const [activeFilter, setActiveFilter] = useState('Semua');
 
+  const carList = cars || allCars;
   const filteredCars =
     activeFilter === 'Semua'
-      ? allCars
-      : allCars.filter((car) => car.type === activeFilter);
+      ? carList
+      : carList.filter((car) => car.type === activeFilter);
 
   const displayedCars = limit ? filteredCars.slice(0, limit) : filteredCars;
 
@@ -63,7 +66,7 @@ const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pil
               className="bg-gray-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <div className="relative h-40 mb-4 bg-white rounded-lg overflow-hidden">
-                <Image src={car.image} alt={car.name} fill className="object-contain p-2" />
+                <Image src={car.mainImage} alt={car.name} fill className="object-contain p-2" />
               </div>
 
               <div className="space-y-3">
@@ -79,14 +82,14 @@ const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pil
                 </div>
 
                 <div className="flex items-center justify-between text-xs text-gray-600">
-                  <span>{car.features.matic ? 'Matic' : 'Manual'}</span>
-                  <span>{car.features.ron92 ? 'RON 92' : 'Premium'}</span>
-                  <span>Fuel</span>
+                  <span>{car.specifications.transmisi}</span>
+                  <span>{car.specifications.bahanBakar}</span>
+                  <span>{car.specifications.seats} Seats</span>
                 </div>
 
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200">
+                <Link href={`/detail/${car.id}`} className="w-full block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg text-center transition-colors duration-200">
                   View Details
-                </button>
+                </Link>
               </div>
             </div>
           ))}

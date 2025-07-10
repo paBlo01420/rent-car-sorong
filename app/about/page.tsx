@@ -146,23 +146,23 @@ export default function AboutPage() {
 
       {/* Call to Action Section */}
       <section className="bg-white py-12 px-4 rounded-xl mb-12">
-        <div className="relative max-w-5xl mx-auto bg-violet-600 text-white rounded-2xl overflow-hidden flex items-center justify-between p-8 shadow-lg">
-          <div className="relative z-10">
-            <h2 className="text-2xl font-bold mb-2">Butuh Mobil?</h2>
-            <p className="text-lg font-semibold mb-1">085244129181</p>
-            <p className="text-sm mb-4">Hubungi kami sekarang!</p>
-            <button className="bg-yellow-400 text-black px-4 py-2 rounded-md font-medium hover:bg-yellow-300 transition">
-              Pesan Sekarang
-            </button>
+        <div className="relative max-w-5xl mx-auto bg-violet-600 text-white rounded-2xl overflow-hidden flex flex-col items-center justify-center p-8 shadow-lg text-center">
+          <div className="relative z-10 flex flex-col items-center">
+        <h2 className="text-2xl font-bold mb-2">Butuh Mobil?</h2>
+        <p className="text-lg font-semibold mb-1">085244129181</p>
+        <p className="text-sm mb-4">Hubungi kami sekarang!</p>
+        <button className="bg-yellow-400 text-black px-4 py-2 rounded-md font-medium hover:bg-yellow-300 transition">
+          Pesan Sekarang
+        </button>
           </div>
           <div className="absolute top-0 right-0 bottom-0 w-1/2 z-0">
-            <Image
-              src="/images/mobil-display.png"
-              alt="Mobil"
-              fill
-              className="object-cover opacity-30"
-              priority
-            />
+        <Image
+          src="/images/mobil-display.png"
+          alt="Mobil"
+          fill
+          className="object-cover opacity-30"
+          priority
+        />
           </div>
         </div>
       </section>
