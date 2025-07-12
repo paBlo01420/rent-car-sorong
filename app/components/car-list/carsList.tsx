@@ -1,17 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { cars as allCars } from 'app/data/cars';
+import axios from 'axios';
 import { FaCarSide, FaTruckPickup, FaShuttleVan, FaCaravan, FaCar } from 'react-icons/fa';
 import Link from 'next/link';
-
-interface CarsListProps {
-  limit?: number;
-  hideFilter?: boolean;
-  title?: string;
-  cars?: typeof allCars;
-}
 
 const typeIcons: Record<string, React.ReactNode> = {
   Semua: <FaCar className="inline-block mr-2" />,
@@ -22,14 +15,39 @@ const typeIcons: Record<string, React.ReactNode> = {
   Cabriolet: <FaCarSide className="inline-block mr-2" />,
 };
 
-const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pilih Unit", cars }) => {
+interface CarType {
+  id: number;
+  name: string;
+  type: string;
+  price: string;
+  period: string;
+  mainImage: string;
+  specifications: {
+    transmisi: string;
+    bahanBakar: string;
+    seats: string;
+  };
+}
+
+interface CarsListProps {
+  limit?: number;
+  hideFilter?: boolean;
+  title?: string;
+}
+
+const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pilih Unit" }) => {
+  const [cars, setCars] = useState<CarType[]>([]);
   const [activeFilter, setActiveFilter] = useState('Semua');
 
-  const carList = cars || allCars;
-  const filteredCars =
-    activeFilter === 'Semua'
-      ? carList
-      : carList.filter((car) => car.type === activeFilter);
+  useEffect(() => {
+    axios.get('/api/cars')
+      .then(res => setCars(res.data))
+      .catch(err => console.error('Gagal mengambil data mobil:', err));
+  }, []);
+
+  const filteredCars = activeFilter === 'Semua'
+    ? cars
+    : cars.filter(car => car.type === activeFilter);
 
   const displayedCars = limit ? filteredCars.slice(0, limit) : filteredCars;
 
@@ -66,7 +84,7 @@ const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pil
               className="bg-gray-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <div className="relative h-40 mb-4 bg-white rounded-lg overflow-hidden">
-                <Image src={car.mainImage} alt={car.name} fill className="object-contain p-2" />
+                <Image src={car.mainImage} alt={car.name}   unoptimized fill className="object-contain p-2" />
               </div>
 
               <div className="space-y-3">
@@ -95,7 +113,7 @@ const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pil
           ))}
         </div>
 
-        {/* Logo Mobil Section */}
+        {/* Logo Mobil */}
         <section className="bg-white py-22 px-4 rounded-xl mb-8 mt-8">
           <div className="flex justify-center flex-wrap gap-20 items-center">
             {[

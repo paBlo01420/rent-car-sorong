@@ -35,7 +35,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "data/cars.json"  ],
   "exclude": [
     "node_modules"
   ]

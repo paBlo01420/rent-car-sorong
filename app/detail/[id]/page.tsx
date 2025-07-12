@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { cars as carsData } from 'app/data/cars';
+import axios from 'axios';
 
 const DetailCar = () => {
   const params = useParams();
@@ -15,15 +15,41 @@ const DetailCar = () => {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [car, setCar] = useState(null);
 
-  useEffect(() => {
-    if (id) {
-      const foundCar = carsData.find(car => car.id === parseInt(id as string));
-      setCar(foundCar || null);
+useEffect(() => {
+  const fetchCar = async () => {
+    try {
+      const res = await axios.get(`/api/cars/${id}`);
+      setCar(res.data);
+    } catch (error) {
+      console.error('Gagal fetch mobil:', error);
+      setCar(null);
     }
-  }, [id]);
+  };
 
-  // Data mobil lain (6 unit, exclude current)
-  const otherCars = carsData.filter(item => item.id !== car?.id).slice(0, 6);
+  if (id) {
+    fetchCar();
+  }
+}, [id]);
+
+
+const [otherCars, setOtherCars] = useState([]);
+
+useEffect(() => {
+  const fetchOtherCars = async () => {
+    try {
+      const res = await axios.get('/api/cars');
+      const allCars = res.data;
+      const filtered = allCars.filter((item: any) => item.id !== parseInt(id));
+      setOtherCars(filtered.slice(0, 6));
+    } catch (error) {
+      console.error('Gagal fetch semua mobil:', error);
+    }
+  };
+
+  if (id) fetchOtherCars();
+}, [id]);
+
+  
 
   if (!car) {
     return (
@@ -58,6 +84,7 @@ const DetailCar = () => {
                   alt={car.name}
                   fill
                   className="object-contain transition-opacity duration-500 ease-in-out opacity-100"
+                  unoptimized
                 />
               </div>
               <div className="flex gap-4 justify-center">
@@ -67,7 +94,7 @@ const DetailCar = () => {
                     className={`relative w-20 h-20 bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${selectedImage === index ? 'ring-2 ring-blue-600 ring-offset-2' : 'hover:opacity-80'}`}
                     onClick={() => setSelectedImage(index)}
                   >
-                    <Image src={image} alt={`${car.name} ${index}`} fill className="object-cover" />
+                    <Image src={image} alt={`${car.name} ${index}`} fill className="object-cover" unoptimized />
                   </div>
                 ))}
               </div>
@@ -204,7 +231,21 @@ const DetailCar = () => {
               className="bg-gray-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <div className="relative h-40 mb-4 bg-white rounded-lg overflow-hidden">
-                <Image src={item.mainImage} alt={item.name} fill className="object-contain p-2" />
+                {/* Pastikan mainImage tidak kosong/null */}
+                {item.mainImage ? (
+                  <Image
+                    src={item.mainImage}
+                    alt={item.name}
+                    fill
+                    className="object-contain p-2"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-400">
+                    Gambar tidak tersedia
+                  </div>
+                )}
               </div>
               <div className="space-y-3">
                 <div className="flex justify-between items-start">

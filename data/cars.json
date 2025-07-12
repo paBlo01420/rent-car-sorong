@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "name": "Avanza",
+    "type": "Minivan",
+    "price": "Rp.350.000",
+    "period": "per day",
+    "mainImage": "/images/car-list/avanza-gray.png",
+    "images": [
+      "/images/car-list/avanza-gray.png",
+      "/images/detail-car/detail-dashboard.png",
+      "/images/detail-car/detail-kursi.png",
+      "/images/detail-car/detail-setir.png"
+    ],
+    "specifications": {
+      "transmisi": "Matic",
+      "bahanBakar": "Gasoline",
+      "pintu": "5",
+      "airConditioner": "Yes",
+      "seats": "7",
+      "konsumsBBM": "13 Km/Liter"
+    },
+    "features": {
+      "primary": [
+        "ABS",
+        "Air Bags",
+        "Cruise Control"
+      ],
+      "secondary": [
+        "Air Bags",
+        "Air Conditioner"
+      ]
+    },
+    "availability": true,
+    "description": "Toyota Avanza adalah kendaraan keluarga yang sempurna..."
+  },
+  {
+    "id": 2,
+    "name": "Xpander",
+    "type": "Minivan",
+    "price": "Rp.400.000",
+    "period": "per day",
+    "mainImage": "/images/car-list/avanza-gray.png",
+    "images": [
+      "/images/car-list/avanza-gray.png",
+      "/images/detail-car/detail-dashboard.png",
+      "/images/detail-car/detail-kursi.png",
+      "/images/detail-car/detail-setir.png"
+    ],
+    "specifications": {
+      "transmisi": "Matic",
+      "bahanBakar": "Diesel",
+      "pintu": "5",
+      "airConditioner": "Yes",
+      "seats": "7",
+      "konsumsBBM": "12 Km/Liter"
+    },
+    "features": {
+      "primary": [
+        "ABS",
+        "Air Bags",
+        "Cruise Control"
+      ],
+      "secondary": [
+        "Air Bags",
+        "Air Conditioner"
+      ]
+    },
+    "availability": true,
+    "description": "Mitsubishi Expander adalah kendaraan keluarga yang sempurna..."
+  },
+  {
+    "id": 1752291704914,
+    "name": "Alphard",
+    "type": "SUV",
+    "price": "550.000",
+    "period": "per day",
+    "mainImage": "https://i.pinimg.com/1200x/96/0d/0f/960d0f5f5f1574f2a11e96444062b0e5.jpg",
+    "images": [
+      "https://i.pinimg.com/1200x/96/0d/0f/960d0f5f5f1574f2a11e96444062b0e5.jpg",
+      "https://i.pinimg.com/1200x/96/0d/0f/960d0f5f5f1574f2a11e96444062b0e5.jpg",
+      "https://i.pinimg.com/1200x/96/0d/0f/960d0f5f5f1574f2a11e96444062b0e5.jpg"
+    ],
+    "description": "",
+    "specifications": {
+      "transmisi": "Matic",
+      "bahanBakar": "Gasoline",
+      "pintu": "4",
+      "airConditioner": "",
+      "seats": "5",
+      "konsumsBBM": ""
+    },
+    "features": {
+      "primary": [],
+      "secondary": []
+    },
+    "availability": true
+  },
+  {
+    "id": 1752294731994,
+    "name": "Alphard",
+    "type": "SUV",
+    "price": "800.000",
+    "period": "per day",
+    "mainImage": "https://static.mazda-bandung.com/uploads/2022/07/mazda-3-2022.webp",
+    "description": "",
+    "specifications": {
+      "transmisi": "Matic",
+      "bahanBakar": "Gasoline",
+      "pintu": "4",
+      "airConditioner": "yes",
+      "seats": "8",
+      "konsumsBBM": "12"
+    },
+    "features": {
+      "primary": [
+        "dsadas"
+      ],
+      "secondary": [
+        "dsad"
+      ]
+    },
+    "images": [
+      "https://static.mazda-bandung.com/uploads/2022/07/mazda-3-2022.webp"
+    ],
+    "availability": true
+  }
+]
