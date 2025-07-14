@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { carsWithStatus } from 'data/carsWithStatus';
+import { cars as allCars } from 'app/data/cars';
 import { FaCarSide, FaTruckPickup, FaShuttleVan, FaCaravan, FaCar } from 'react-icons/fa';
 import Link from 'next/link';
 
@@ -10,8 +10,7 @@ interface CarsListProps {
   limit?: number;
   hideFilter?: boolean;
   title?: string;
-  cars?: typeof carsWithStatus;
-  showStatus?: boolean;
+  cars?: typeof allCars;
 }
 
 const typeIcons: Record<string, React.ReactNode> = {
@@ -23,16 +22,10 @@ const typeIcons: Record<string, React.ReactNode> = {
   Cabriolet: <FaCarSide className="inline-block mr-2" />,
 };
 
-const Cars: React.FC<CarsListProps> = ({ 
-  limit, 
-  hideFilter = false, 
-  title = "Pilih Unit", 
-  cars,
-  showStatus = true 
-}) => {
+const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pilih Unit", cars }) => {
   const [activeFilter, setActiveFilter] = useState('Semua');
 
-  const carList = cars || carsWithStatus;
+  const carList = cars || allCars;
   const filteredCars =
     activeFilter === 'Semua'
       ? carList
@@ -100,25 +93,6 @@ const Cars: React.FC<CarsListProps> = ({
             >
               <div className="relative h-40 mb-4 bg-white rounded-lg overflow-hidden">
                 <Image src={car.mainImage} alt={car.name} fill className="object-contain p-2" />
-                
-                {/* Status Overlay untuk mobil yang tidak tersedia */}
-                {showStatus && car.status !== 'available' && (
-                  <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
-                    <div className="text-white text-center">
-                      <div className="text-lg font-bold">{getStatusText(car.status)}</div>
-                      <div className="text-sm opacity-90">Tidak tersedia untuk disewa</div>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Status Badge */}
-                {showStatus && (
-                  <div className="absolute top-2 right-2">
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(car.status)}`}>
-                      {getStatusText(car.status)}
-                    </span>
-                  </div>
-                )}
               </div>
 
               <div className="space-y-3">
@@ -160,7 +134,7 @@ const Cars: React.FC<CarsListProps> = ({
           ))}
         </div>
 
-        {/* Logo Mobil Section */}
+        {/* Logo Mobil */}
         <section className="bg-white py-22 px-4 rounded-xl mb-8 mt-8">
           <div className="flex justify-center flex-wrap gap-20 items-center">
             {[
