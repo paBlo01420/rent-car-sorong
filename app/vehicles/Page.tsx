@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Cars from '@/components/car-list/carsList';
-import { carsWithStatus } from 'data/carsWithStatus';
 import { FaSearch } from 'react-icons/fa';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -26,13 +26,34 @@ const VehiclesPage = () => {
   const [returnDate, setReturnDate] = useState('');
   const [returnTime, setReturnTime] = useState('');
   const [carType, setCarType] = useState('All');
-  const [filteredCars, setFilteredCars] = useState(carsWithStatus);
+
+  const [allCars, setAllCars] = useState<any[]>([]);
+  const [filteredCars, setFilteredCars] = useState<any[]>([]);
+  const [carTypes, setCarTypes] = useState<string[]>(['All']);
+
   const [pickupDateObj, setPickupDateObj] = useState<Date | null>(null);
   const [returnDateObj, setReturnDateObj] = useState<Date | null>(null);
 
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const res = await axios.get('/api/cars');
+        setAllCars(res.data);
+        setFilteredCars(res.data);
+
+        const types = Array.from(new Set(res.data.map((car: any) => car.type)));
+        setCarTypes(['All', ...types]);
+      } catch (error) {
+        console.error('Error fetching cars:', error);
+      }
+    };
+
+    fetchCars();
+  }, []);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const filtered = carsWithStatus.filter(car => {
+    const filtered = allCars.filter(car => {
       return carType === 'All' || car.type === carType;
     });
     setFilteredCars(filtered);
@@ -59,6 +80,7 @@ const VehiclesPage = () => {
               ))}
             </select>
           </div>
+
           {/* Tanggal Mulai Rental */}
           <div className="flex-1 min-w-[170px]">
             <label className="block text-xs font-semibold text-gray-500 mb-1 md:mb-0 md:sr-only">Tanggal Mulai Rental</label>
@@ -75,6 +97,7 @@ const VehiclesPage = () => {
               required
             />
           </div>
+
           {/* Waktu Mulai */}
           <div className="flex-1 min-w-[120px]">
             <label className="block text-xs font-semibold text-gray-500 mb-1 md:mb-0 md:sr-only">Waktu Mulai</label>
@@ -86,6 +109,7 @@ const VehiclesPage = () => {
               required
             />
           </div>
+
           {/* Tanggal Selesai */}
           <div className="flex-1 min-w-[170px]">
             <label className="block text-xs font-semibold text-gray-500 mb-1 md:mb-0 md:sr-only">Tanggal Selesai</label>
@@ -102,6 +126,7 @@ const VehiclesPage = () => {
               required
             />
           </div>
+
           {/* Waktu Selesai */}
           <div className="flex-1 min-w-[120px]">
             <label className="block text-xs font-semibold text-gray-500 mb-1 md:mb-0 md:sr-only">Waktu Selesai</label>
@@ -113,7 +138,8 @@ const VehiclesPage = () => {
               required
             />
           </div>
-          {/* Button Cari Mobil */}
+
+          {/* Tombol Cari Mobil */}
           <button
             type="submit"
             className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold text-base shadow-md transition-all duration-200 min-w-[140px]"
@@ -122,9 +148,10 @@ const VehiclesPage = () => {
           </button>
         </form>
       </div>
+
       {/* Hasil Filter */}
       <div className="mt-8">
-        <Cars hideFilter limit={null} title="Daftar Mobil Tersedia" cars={filteredCars} showStatus={true} />
+        <Cars hideFilter limit={null} title="Daftar Mobil Tersedia" cars={filteredCars} />
       </div>
       <Footer />
     </>
