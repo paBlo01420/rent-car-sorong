@@ -222,10 +222,11 @@ const DetailCar = () => {
                   <span>{item.specifications.bahanBakar}</span>
                   <span>{item.specifications.seats} Seats</span>
                 </div>
-                <Link href={`/detail/${item.id}`} legacyBehavior>
-                  <a className="w-full block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg text-center transition-colors duration-200">
-                    View Details
-                  </a>
+                <Link 
+                  href={`/detail/${item.id}`} 
+                  className="w-full block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg text-center transition-colors duration-200"
+                >
+                  View Details
                 </Link>
               </div>
             </div>

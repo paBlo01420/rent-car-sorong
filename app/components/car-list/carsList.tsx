@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { cars as allCars } from 'app/data/cars';
+import { carsWithStatus } from 'data/carsWithStatus';
 import { FaCarSide, FaTruckPickup, FaShuttleVan, FaCaravan, FaCar } from 'react-icons/fa';
 import Link from 'next/link';
 
@@ -10,7 +10,8 @@ interface CarsListProps {
   limit?: number;
   hideFilter?: boolean;
   title?: string;
-  cars?: typeof allCars;
+  cars?: typeof carsWithStatus;
+  showStatus?: boolean;
 }
 
 const typeIcons: Record<string, React.ReactNode> = {
@@ -22,16 +23,48 @@ const typeIcons: Record<string, React.ReactNode> = {
   Cabriolet: <FaCarSide className="inline-block mr-2" />,
 };
 
-const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pilih Unit", cars }) => {
+const Cars: React.FC<CarsListProps> = ({ 
+  limit, 
+  hideFilter = false, 
+  title = "Pilih Unit", 
+  cars,
+  showStatus = true 
+}) => {
   const [activeFilter, setActiveFilter] = useState('Semua');
 
-  const carList = cars || allCars;
+  const carList = cars || carsWithStatus;
   const filteredCars =
     activeFilter === 'Semua'
       ? carList
       : carList.filter((car) => car.type === activeFilter);
 
   const displayedCars = limit ? filteredCars.slice(0, limit) : filteredCars;
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'available':
+        return 'Tersedia';
+      case 'rented':
+        return 'Sedang Disewa';
+      case 'maintenance':
+        return 'Maintenance';
+      default:
+        return 'Unknown';
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'available':
+        return 'bg-green-100 text-green-800';
+      case 'rented':
+        return 'bg-orange-100 text-orange-800';
+      case 'maintenance':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
 
   return (
     <section className="py-8 bg-white">
@@ -67,6 +100,25 @@ const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pil
             >
               <div className="relative h-40 mb-4 bg-white rounded-lg overflow-hidden">
                 <Image src={car.mainImage} alt={car.name} fill className="object-contain p-2" />
+                
+                {/* Status Overlay untuk mobil yang tidak tersedia */}
+                {showStatus && car.status !== 'available' && (
+                  <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <div className="text-lg font-bold">{getStatusText(car.status)}</div>
+                      <div className="text-sm opacity-90">Tidak tersedia untuk disewa</div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Status Badge */}
+                {showStatus && (
+                  <div className="absolute top-2 right-2">
+                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(car.status)}`}>
+                      {getStatusText(car.status)}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-3">
@@ -87,8 +139,21 @@ const Cars: React.FC<CarsListProps> = ({ limit, hideFilter = false, title = "Pil
                   <span>{car.specifications.seats} Seats</span>
                 </div>
 
-                <Link href={`/detail/${car.id}`} className="w-full block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg text-center transition-colors duration-200">
-                  View Details
+                {/* Tombol View Details - disabled jika tidak tersedia */}
+                <Link 
+                  href={car.status === 'available' ? `/detail/${car.id}` : '#'} 
+                  className={`w-full block font-semibold py-3 rounded-lg text-center transition-colors duration-200 ${
+                    car.status === 'available'
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
+                      : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                  }`}
+                  onClick={(e) => {
+                    if (car.status !== 'available') {
+                      e.preventDefault();
+                    }
+                  }}
+                >
+                  {car.status === 'available' ? 'View Details' : 'Tidak Tersedia'}
                 </Link>
               </div>
             </div>
