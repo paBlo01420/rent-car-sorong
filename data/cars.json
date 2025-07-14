@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Avanza",
-    "type": "SUV",
+    "type": "Minivan",
     "price": "Rp.350.000",
     "period": "per day",
     "mainImage": "/images/car-list/avanza-gray.png",
@@ -52,7 +52,7 @@
       "bahanBakar": "Diesel",
       "pintu": "5",
       "airConditioner": "Yes",
-      "seats": "7",
+      "seats": "5",
       "konsumsBBM": "12 Km/Liter"
     },
     "features": {
@@ -71,11 +71,11 @@
   },
   {
     "id": 1752291704914,
-    "name": "Alphard",
-    "type": "Minivan",
-    "price": "1050.000",
+    "name": "Civic",
+    "type": "Sedan",
+    "price": "550.000",
     "period": "per day",
-    "mainImage": "https://cms-i.autodaily.vn/du-lieu/2021/01/14/toyota-alphard-2021-1-1.jpg",
+    "mainImage": "https://di-uploads-pod3.s3.amazonaws.com/ralphhonda/uploads/2016/11/civic-sdn.jpg",
     "images": [
       "https://cms-i.autodaily.vn/du-lieu/2021/01/14/toyota-alphard-2021-1-1.jpg",
       "/images/detail-car/detail-dashboard.png",
@@ -99,13 +99,13 @@
   },
   {
     "id": 1752493465815,
-    "name": "Mazda 3",
-    "type": "Sedan",
-    "price": "850.000",
+    "name": "Innova",
+    "type": "MPV",
+    "price": "600.000",
     "period": "per day",
-    "mainImage": "https://momobil.id/news/wp-content/uploads/2022/04/Mazda-3-Hatchback-1024x576.jpg",
+    "mainImage": "https://ymimg1.b8cdn.com/uploads/article/3017/pictures/2555475/2016_Toyota_Innova__21_.jpg",
     "images": [
-      "https://momobil.id/news/wp-content/uploads/2022/04/Mazda-3-Hatchback-1024x576.jpg"
+      "https://ymimg1.b8cdn.com/uploads/article/3017/pictures/2555475/2016_Toyota_Innova__21_.jpg"
     ],
     "description": "elegan ",
     "specifications": {
@@ -117,13 +117,34 @@
       "konsumsBBM": "12"
     },
     "features": {
-      "primary": [
-        "https://momobil.id/news/wp-content/uploads/2022/04/Mazda-3-Hatchback-1024x576.jpg"
-      ],
-      "secondary": [
-        "https://momobil.id/news/wp-content/uploads/2022/04/Mazda-3-Hatchback-1024x576.jpg"
-      ]
+      "primary": [],
+      "secondary": []
     },
+    "availability": true
+  },
+  {
+    "id": 1752500622842,
+    "name": "Fortuner",
+    "type": "SUV",
+    "price": "900.000",
+    "period": "per day",
+    "mainImage": "https://img.indianautosblog.com/2020/06/04/toyota-fortuner-legender-exterior-bf38.jpg",
+    "description": "",
+    "specifications": {
+      "transmisi": "Matic",
+      "bahanBakar": "Gasoline",
+      "pintu": "4",
+      "airConditioner": "Yes",
+      "seats": "7",
+      "konsumsBBM": "12"
+    },
+    "features": {
+      "primary": [],
+      "secondary": []
+    },
+    "images": [
+      "https://img.indianautosblog.com/2020/06/04/toyota-fortuner-legender-exterior-bf38.jpg"
+    ],
     "availability": true
   }
 ]
