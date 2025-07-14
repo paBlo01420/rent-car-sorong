@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 
-const phoneNumber = "6281234567890";
-const waNumber = "6281234567890";
+const phoneNumber = "6285860090932";
+const waNumber = "+6285860090932";
 
 const FloatingContact: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -76,7 +76,7 @@ const FloatingContact: React.FC = () => {
                   href={`tel:${phoneNumber}`}
                   className="text-lg font-bold text-pink-600 underline underline-offset-2 tracking-wide hover:text-pink-800 transition-all"
                 >
-                  +62 812-3456-7890
+                  +62 858-6009-0932
                 </a>
               </div>
             )}

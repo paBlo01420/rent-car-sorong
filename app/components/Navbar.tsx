@@ -86,7 +86,7 @@ const Navbar = () => {
             </div>
             {/* WA Button Desktop */}
             <a
-              href="https://wa.me/6281234567890?text=Halo%20Admin%2C%20saya%20ingin%20sewa%20mobil%20rental"
+              href="https://wa.me/6285860090932?text=Halo%20Admin%2C%20saya%20ingin%20sewa%20mobil%20rental"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-6 flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded-full shadow transition-all duration-200 text-sm"

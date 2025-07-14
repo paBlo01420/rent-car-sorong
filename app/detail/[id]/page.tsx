@@ -196,7 +196,7 @@ useEffect(() => {
             </div>
             {/* Tombol Pesan Sekarang (WA) */}
             <a
-              href={`https://wa.me/6281234567890?text=Halo%20Admin%2C%20saya%20ingin%20sewa%20${encodeURIComponent(car.name)}`}
+              href={`https://wa.me/6285860090932?text=Halo%20Admin%2C%20saya%20ingin%20sewa%20${encodeURIComponent(car.name)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full bg-green-500 hover:bg-green-600 text-white font-bold text-lg py-4 rounded-xl text-center shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
